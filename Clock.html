@@ -1,29 +1,26 @@
 <!DOCTYPE html>
 <html>
 <head>
-<style>
+	<title>Clock Animation</title>
+	<style>
 	body {
 		overflow: hidden
 	}
 	
-	#toggle {
+	#button {
 	  position: absolute;
 	  top:  2%;
-	  left:46%;
+	  width: 100%;
+	  text-align: center;
 	}
-
-	#style {
-	  position: absolute;
-	  top:  2%;
-	  left: 51%;
-	}
-
 </style>
 </head>
-<body>
-	<button id = 'toggle'> Toggle</button>
-	<button id = 'style' >Quartz</button>
 
+<body>
+	<div id = 'button'>
+		<button id = 'toggle'> Toggle</button>
+		<button id = 'style' >Quartz</button>
+	</div>
 	<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/84/three.min.js"></script>
 	<script src="https://threejs.org/examples/js/controls/OrbitControls.js"></script>
