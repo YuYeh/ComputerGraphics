@@ -11,6 +11,4 @@
 
 #### Homework 1: Time-based animation, button
 
-<div style=' padding-left:10px;padding-right:10px'>
-Time-based animation 主要是模擬一般時鐘、石英錶以及扇形時鐘的運作，在進入到 Homework 1畫面時，上方兩顆按鈕一個功能為時鐘的啟動與暫停，另一個作用是負責切換時鐘種類。
-</div>
+Time-based animation 主要是模擬一般鐘錶、石英錶以及扇形時鐘的運作，在進入到 Homework 1畫面時，上方兩顆按鈕分別為時鐘的啟動與暫停，以及時鐘種類切換。此外，可藉由按住不放移動視角，或者轉動滑鼠滾輪切換遠近的方式去觀察時鐘的運行，至於時鐘以及背景顏色的搭配，則是參考 [這裡](https://www.beforafter.org/blog/2016/50-color-combinations) 進行配色。
