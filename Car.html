@@ -18,7 +18,7 @@
 </head>
 
 <body>
-	<div id="info">Car</div>
+	<div id="info">OBJ model, Kinematic Drive<br>Rectangle-Circle Intersection, Dual Viewports</div>
 	<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/84/three.min.js"></script>
 	<script src="https://threejs.org/examples/js/controls/OrbitControls.js"></script>
@@ -124,7 +124,7 @@
 			new THREE.LineBasicMaterial({
 			  color: 0xffffff
 			}));
-		  sceneHUD.add(line);
+		 // sceneHUD.add(line);
 		}
 		
 		function init() {
@@ -319,16 +319,16 @@
 			var HH = window.innerHeight;
 			renderer.setScissorTest(true);
 		  
-			renderer.setViewport(0, 0, WW / 2, HH);
+			renderer.setViewport(0, 0, (WW / 2)-0.2, HH);
 			camera.aspect = WW / 2 / HH;
 			camera.updateProjectionMatrix();
-			renderer.setScissor(0, 0, WW / 2, HH);
+			renderer.setScissor(0, 0, (WW / 2)-0.2, HH);
 			renderer.clear();
 			renderer.render(scene, camera);
 			renderer.render(sceneHUD, cameraHUD);
 
-			renderer.setViewport(WW / 2, 0, WW / 2, HH);
-			renderer.setScissor(WW / 2, 0, WW / 2, HH);
+			renderer.setViewport((WW / 2)+0.2, 0, WW / 2, HH);
+			renderer.setScissor((WW / 2)+0.2, 0, WW / 2, HH);
 			renderer.clear();
 			renderer.render(scene, camera3rd);
 			renderer.render(sceneHUD, cameraHUD);
