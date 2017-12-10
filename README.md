@@ -7,6 +7,8 @@
  * ✅ [Time-based animation, button](https://yuyeh.github.io/cghw/Clock.html)
  
  * ✅ [Hierarchical model, Cannonball](https://yuyeh.github.io/cghw/Tank.html)
+ 
+ * ✅ [OBJ model, Kinematic Drive, Rectangle-Circle Intersection, Dual Viewports](https://yuyeh.github.io/cghw/Car.html)
 
 
 #### Time-based animation, button
@@ -17,3 +19,8 @@ Time-based animation 主要是模擬一般鐘錶、石英錶以及扇形時鐘�
 #### Hierarchical model, Cannonball
 
 Hierarchical model 簡單來說就是模擬一台戰車的一些基本動作，[W] 和 [S] 分別是戰車的前進以及後退，[A] 和 [D]控制車身的轉動，[J] 和 [L] 控制炮塔的轉動，[I] 和 [K] 控制大砲的仰角 ，最後空白建 [SPACE] 是發射大砲，進入到 Tank的畫面時，畫面上發會有兩顆按鈕，左方的start按鈕按下去後可以在 x = 100 或 -100 這兩邊生成標靶，此時記得遵守規則，只能在    x = 0 這一條線上進行移動，調整砲台方向以及大砲仰角，確定後按下空白鍵發射砲彈，打中標靶後標靶會消失並隨機再生成一個標靶，若是覺得場地太亂，可以點選畫面上方的clear，點下去後會自動清除畫面上的標靶以及所有砲彈。
+
+
+#### OBJ model, Kinematic Drive, Rectangle-Circle Intersection, Dual Viewports
+
+駕駛&碰撞偵測 主要是模擬一般車子在路上行駛(車子需載入 OBJ model )，撞到障礙物後會停下來，還要能自己將車輛駛出，在進入到 Car.html 時，車子最初會以初速 5 的速度向+x軸行駛，[方向鍵上:up] 可以使車子加速、[方向鍵:down] 可以使車子減速，減到一定程度可以使車子倒退、[方向鍵:left] 可以使車子向左彎，[方向鍵:right] 則是可以使車子向右彎，撞到障礙物時車子會停止，此時可以轉動方向，直到偵測結果為未碰撞即可繼續行駛。
