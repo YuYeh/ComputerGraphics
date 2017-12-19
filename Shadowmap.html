@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>shadowmap</title>
+	<style>
+		#info {
+			position: absolute;
+			top: 2%;
+			width: 100%;
+			padding: 10px;
+			text-align: center;
+			color: #ffff00
+		}
+
+		body {
+		  overflow: hidden;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="info">class, shadowmap, raycaster, helpers</div>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/84/three.min.js"></script>
+	<script src="https://threejs.org/examples/js/controls/OrbitControls.js"></script>
+	<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+	<script src="https://rawgit.com/mrdoob/three.js/master/examples/js/loaders/MTLLoader.js"></script>
+	<script src="https://rawgit.com/mrdoob/three.js/master/examples/js/loaders/OBJLoader.js"></script>
+	<script src="js/button.js"></script>
+
+	<script>
+		var scene, renderer, camera;
+		var controls, button, button2;
+		var loader = new THREE.TextureLoader();
+		var raycaster = new THREE.Raycaster();
+		var pickables = [];
+		var isOn, isOn2,spotLight, lampLight;
+		var mouse = new THREE.Vector2();
+		
+		init();
+		animate();
+
+		function buildGrip() {
+			var grip = new THREE.Object3D();
+		  loader.setCrossOrigin ('');  
+		  let griptexture = loader.load( "images/plastic.jpg");
+		  var gripMaterial = new THREE.MeshLambertMaterial({map: griptexture});
+		  var gripMesh = new THREE.Mesh(new THREE.BoxGeometry(8,1,1),gripMaterial);
+		  gripMesh.position.z = 1.25;
+		  grip.add(gripMesh);
+		  var gripMesh2 = new THREE.Mesh(new THREE.BoxGeometry(1,1,1.5),gripMaterial);
+		  gripMesh2.position.x = 3.5;
+		  grip.add(gripMesh2);
+		  var gripMesh3 = gripMesh2.clone();
+		  gripMesh3.position.x = -3.5;
+		  grip.add(gripMesh3);
+		  return grip;
+		}
+		
+		function buildHalfPenHolder() {
+		
+			loader.setCrossOrigin (''); 
+			let texture = loader.load( "images/penHolder.jpg");
+			var material = new THREE.MeshLambertMaterial({map: texture});
+			var penHolderMesh = new THREE.Object3D();
+			var part1 = new THREE.Mesh(new THREE.CubeGeometry(5,0.5,0.5),material);
+			part1.position.z = 2.25;
+			penHolderMesh.add(part1);
+			var part2 = new THREE.Mesh(new THREE.CubeGeometry(0.5,0.5,4.5),material);
+			part2.position.set(2.25, 0,-0.25);
+			penHolderMesh.add(part2);
+			var part3 = new THREE.Mesh(new THREE.CubeGeometry(4.5,0.5,0.5),material);
+			part3.position.set(-0.25,0,-2.25);
+			penHolderMesh.add(part3);
+		    var part4 = new THREE.Mesh(new THREE.CubeGeometry(0.5,0.5,3.5),material);
+			part4.position.set(-2.25,0,0.25);
+			penHolderMesh.add(part4);
+			return penHolderMesh;
+		}
+		
+		function buildPenHolder() {
+			var penHolder = new THREE.Object3D();
+			var material = new THREE.MeshLambertMaterial();
+			var part1 = buildHalfPenHolder();
+			part1.position.y = 5.55;
+			penHolder.add(part1);
+			var part2 = part1.clone();
+			part2.rotation.z= Math.PI;
+			part2.rotation.y= Math.PI/2;
+			part2.position.y = 0.3;
+			penHolder.add(part2);
+			var part3 = new THREE.Mesh(new THREE.CubeGeometry(5,0.1,5),material);
+			part3.position.y = 0.05;
+			penHolder.add(part3);
+			
+			var part4 = new THREE.Mesh(new THREE.CubeGeometry(0.5,4.75,0.5),material);
+			part4.position.set(-2.25,2.925,-2.25);
+			penHolder.add(part4);
+			return penHolder;
+		}
+		
+		function buildRemoteControl() {
+			var remoteControl = new THREE.Object3D();
+			loader.setCrossOrigin (''); 
+			let texture = loader.load( "images/remoteControl.jpg");
+			var material = new THREE.MeshLambertMaterial({map: texture});
+			
+			var frame1 = new  THREE.Mesh(new THREE.CubeGeometry(0.5,1.75,5.5),material);
+			frame1.position.set(1.75,0.875,0);
+			remoteControl.add(frame1);
+			var frame2 =frame1.clone();
+			frame2.position.x = -1.75;
+			remoteControl.add(frame2);
+			var frame3 = new  THREE.Mesh(new THREE.CubeGeometry(3,1.75,0.5),material);
+			frame3.position.set(0,0.875,2.5);
+			remoteControl.add(frame3);
+			var frame4 = frame3.clone();
+			frame4.position.z = 0;
+			remoteControl.add(frame4);
+			var frame5 = frame3.clone();
+			frame5.position.z = -2.5;
+			remoteControl.add(frame5);
+			var frame6 = new  THREE.Mesh(new THREE.CubeGeometry(3,0.5,4.5),material);
+			frame6.position.y =0.25;
+			remoteControl.add(frame6);
+		  
+			button = new Button(new THREE.Color (0x12ffff), 'light');
+			remoteControl.add(button.obj);
+			button.obj.position.set(0,0.5,-1.25);
+			pickables.push(button.obj);
+
+			button2 = new Button(new THREE.Color (0xff12ff), 'lampLight');
+			remoteControl.add(button2.obj);
+			button2.obj.position.set(0,0.5,1.25);
+			pickables.push(button2.obj);
+
+			return remoteControl;
+		}
+		
+		function buildDesk() {
+			var desk = new THREE.Object3D();
+		  loader.setCrossOrigin ('');  
+		  let wood = loader.load( "images/wood2.jpg" );
+		  let wood2 = loader.load( "images/wood.jpg" );
+		  let single = loader.load( "images/locker.jpg");
+		  let double = loader.load( "images/locker2.jpg");
+		  let leg = loader.load( "images/stainless_steel.jpg") ;
+		  let leg2 = loader.load( "images/stainless_steel2.jpg" );
+		  
+		  var singleLocker = [
+			new THREE.MeshLambertMaterial({map: wood2}),// +x
+			new THREE.MeshLambertMaterial({map: wood2}),// -x
+			new THREE.MeshLambertMaterial({map: wood}),// +y
+			new THREE.MeshLambertMaterial({map: wood}),// -Y
+			new THREE.MeshLambertMaterial({map: single}),// +z
+			new THREE.MeshLambertMaterial({map: wood})// -Z
+		  ];
+		  var doubleLocker = [
+			new THREE.MeshLambertMaterial({map: wood2}),// +x
+			new THREE.MeshLambertMaterial({map: wood2}),// -x
+			new THREE.MeshLambertMaterial({map: wood}),// +y
+			new THREE.MeshLambertMaterial({map: wood}),// -Y
+			new THREE.MeshLambertMaterial({map: double}),// +z
+			new THREE.MeshLambertMaterial({map: wood})// -Z
+		  ];
+		  var material = new THREE.MeshLambertMaterial({map: wood});
+		  var legMaterial = new THREE.MeshLambertMaterial({map: leg});
+		  var legMaterial2 = new THREE.MeshLambertMaterial({map: leg2});
+		  var singleMaterial = new THREE.MultiMaterial(singleLocker);
+		  var doubleMaterial = new THREE.MultiMaterial(doubleLocker);
+		  var base = new THREE.Mesh(new THREE.BoxGeometry(80,3,40),material);
+		  base.position.y = 44.5;
+		  desk.add(base);
+		  var base2 = new THREE.Mesh(new THREE.BoxGeometry(3,43,3),legMaterial);
+		  base2.position.set(27,21.5,12.5);
+		  desk.add(base2);
+		  var base3 = base2.clone();
+		  base3.position.x = -27;
+		  desk.add(base3);
+		  var base4 = base2.clone();
+		  base4.position.z = -12.5;
+		  desk.add(base4);
+		  var base5 = base4.clone();
+		  base5.position.x = -27;
+		  desk.add(base5);
+		  var locker = new THREE.Mesh(new THREE.BoxGeometry(24,20,40),singleMaterial);
+		  locker.position.set(27,27,0);
+		  desk.add(locker);
+		  var locker2 = new THREE.Mesh(new THREE.BoxGeometry(24,20,40),doubleMaterial);
+		  locker2.position.set(-27,27,0);
+		  desk.add(locker2);
+		  
+		  var grip = buildGrip();
+		  grip.position.set(27,32,20.25);
+		  desk.add(grip);
+		  var grip2 = buildGrip();
+		  grip2.position.set(-27,32,20.25);
+		  desk.add(grip2);
+		  var grip3 = buildGrip();
+		  grip3.position.set(-27,22,20.25);
+		  desk.add(grip3);
+		  
+		  var partition = new THREE.Mesh(new THREE.BoxGeometry(32,18,2),material);
+		  partition.position.set(0,27,-17);
+		  desk.add(partition);
+		 
+		  var leg5 = new THREE.Mesh(new THREE.BoxGeometry(3,3,22),legMaterial2);
+		  desk.add(leg5);
+		  leg5.position.set(-27,1.5,0);
+		  var leg6 = leg5.clone();
+		  leg6.position.set(27,1.5,0);
+		  desk.add(leg6);
+		  return desk;
+		}
+
+		function init() {
+		  scene = new THREE.Scene();
+		  renderer = new THREE.WebGLRenderer({antialias: true});
+		  renderer.setSize(window.innerWidth, window.innerHeight);
+		  renderer.setClearColor(0x404040);
+		  
+		  document.body.appendChild(renderer.domElement);
+		  document.addEventListener('mousedown', onDocumentMouseDown, false);
+
+		  camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 1, 10000);
+		  camera.position.z = 200;
+		  controls = new THREE.OrbitControls(camera, renderer.domElement);
+		  
+		  var gridXZ = new THREE.GridHelper(200, 20, 'red', 'white');
+		  //scene.add(gridXZ);
+		 
+		  var penHolder = buildPenHolder();
+		  penHolder.position.set(-5,46,-2);
+		  scene.add(penHolder);
+			
+		  let loader = new THREE.TextureLoader();
+		  loader.setCrossOrigin ('');
+		  let floorMap = loader.load( "images/floor.jpg" );
+		  floorMap.wrapS = THREE.RepeatWrapping;
+		  floorMap.wrapT = THREE.RepeatWrapping;
+		  floorMap.repeat.set(6, 6);
+		 
+		  var floor = new THREE.Mesh(new THREE.PlaneGeometry(200, 200, 140, 140), new  THREE.MeshLambertMaterial(
+		  { map: floorMap,
+		    side: THREE.DoubleSide}
+			));
+		  floor.rotation.x = -Math.PI / 2;
+		  scene.add(floor);
+		  
+		  var desk = buildDesk();
+		  scene.add(desk);
+
+		  var remoteControl = buildRemoteControl();
+		  remoteControl.position.set(28,46,10);
+		  remoteControl.rotation.y = -Math.PI/6;
+		  scene.add(remoteControl);
+		
+		  var onProgress = function(xhr) {
+						if (xhr.lengthComputable) {
+							var percentComplete = xhr.loaded / xhr.total * 100;
+							console.log(Math.round(percentComplete, 2) + '% downloaded');
+						}
+					};
+		  var onError = function(xhr) {};
+			var mtlLoader = new THREE.MTLLoader();
+			mtlLoader.setPath('resources/');
+			mtlLoader.load('lamp-2.mtl', function(materials) {		
+					materials.preload();
+
+					var objLoader = new THREE.OBJLoader();
+					objLoader.setMaterials(materials);
+					objLoader.setPath('resources/');
+					objLoader.load('lamp-2.obj', function(object) {
+
+						var lamp =  unitize (object, 25);
+						lamp.position.set(-25,46,-10);
+						lamp.rotation.y = -Math.PI/6;
+						scene.add (lamp);
+						
+						//scene.add (new THREE.BoxHelper (lamp));
+
+						//////// MATERIAL ADJUSTMENT for porsche ///////////////
+						// transparent window: double-side fix
+						lamp.traverse (
+							function(mesh) {
+								if (mesh instanceof THREE.Mesh) {
+									mesh.material.side = THREE.DoubleSide;
+									mesh.castShadow = true;
+									mesh.receiveShadow = true;
+								}
+							});
+
+
+				}, onProgress, onError);
+			});
+		  var light = new THREE.AmbientLight(0x888888,0.5); // soft white light
+		  scene.add(light);
+		  
+		  spotLight = new THREE.SpotLight(0xffffff,2);
+		  spotLight.position.set(0,200,40);
+		  spotLight.angle = Math.PI / 3;
+		  spotLight.penumbra = 0.6;
+		  
+		  spotLight.castShadow = true;
+		  spotLight.shadow.mapSize.width = 1024;
+		  spotLight.shadow.mapSize.height = 1024;
+		  spotLight.shadow.camera.near = 50;
+		  spotLight.shadow.camera.far = 1000;
+		  spotLight.shadow.camera.fov = 10;
+		  scene.add(spotLight);
+		  //scene.add( new THREE.SpotLightHelper( spotLight ) );
+		  //scene.add ( new THREE.CameraHelper (spotLight.shadow.camera) );
+		  
+		  lampLight = new THREE.SpotLight(0xffffff);
+		  lampLight.position.set(-24, 67, -7);
+		  lampLight.angle = Math.PI/4;
+		  lampLight.distance = 300;
+		  lampLight.target = remoteControl;
+		  lampLight.penumbra = 0.6;
+		  
+		  lampLight.castShadow = true;
+		  
+		  lampLight.shadow.mapSize.width = 1024;
+		  lampLight.shadow.mapSize.height = 1024;
+		  lampLight.shadow.camera.near = 10;
+		  lampLight.shadow.camera.far = 200;
+		  lampLight.shadow.camera.fov = 50;
+		  
+		  scene.add(lampLight);
+		  scene.add(lampLight.target);
+		  //scene.add( new THREE.SpotLightHelper( lampLight ) );
+		  //scene.add ( new THREE.CameraHelper (lampLight.shadow.camera) );
+		  
+		  renderer.shadowMap.enabled = true;
+		  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+		  
+		  floor.receiveShadow = true;
+		  
+		  desk.traverse (
+		   function (mesh) {
+			 if (mesh instanceof THREE.Mesh) {
+			   mesh.castShadow = true;
+				mesh.receiveShadow = true;
+			  }
+			}
+		  );
+		  
+		  penHolder.traverse (
+		   function (mesh) {
+			 if (mesh instanceof THREE.Mesh) {
+			   mesh.castShadow = true;
+				mesh.receiveShadow = true;
+			  }
+			}
+		  );
+		  
+		  remoteControl.traverse (
+		   function (mesh) {
+			 if (mesh instanceof THREE.Mesh) {
+			   mesh.castShadow = true;
+				mesh.receiveShadow = true;
+			  }
+			}
+		  );
+		  window.addEventListener('resize', onWindowResize, false);
+		}
+
+		function unitize (object, targetSize) {  
+	
+			// find bounding box of 'object'
+			var box3 = new THREE.Box3();
+			box3.setFromObject (object);
+			var size = new THREE.Vector3();
+			size.subVectors (box3.max, box3.min);
+			var center = new THREE.Vector3();
+			center.addVectors(box3.max, box3.min).multiplyScalar (0.5);
+			
+			console.log ('center: ' + center.x + ', '+center.y + ', '+center.z );
+			console.log ('size: ' + size.x + ', ' +  size.y + ', '+size.z );
+			
+			// uniform scaling according to objSize
+			var objSize = findMax (size);
+			var scaleSet = targetSize/objSize;
+						
+			var theObject =  new THREE.Object3D();
+			theObject.add (object);
+			object.scale.set (scaleSet, scaleSet, scaleSet);
+			object.position.set (-center.x*scaleSet, -center.y*scaleSet + size.y/2*scaleSet, -center.z*scaleSet);
+			object.rotation.y = Math.PI/2;
+			return theObject;
+			
+			
+			// helper function
+			function findMax(v) {
+				if (v.x > v.y) {
+					return v.x > v.z ? v.x : v.z;
+				} else { // v.y > v.x
+					return v.y > v.z ? v.y : v.z;
+				}
+			}
+					
+		}
+		
+		function onWindowResize() {
+		  camera.aspect = window.innerWidth / window.innerHeight;
+		  camera.updateProjectionMatrix();
+		  renderer.setSize(window.innerWidth, window.innerHeight);
+		}
+
+		function onDocumentMouseDown(event) {
+
+		  event.preventDefault();
+		  mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+		  mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+		  // find intersections
+		  raycaster.setFromCamera(mouse, camera);
+		  var intersects = raycaster.intersectObjects(pickables, true);
+		  if (intersects.length > 0) {
+			let picked = intersects[0].object.parent.name;
+			switch (picked) {
+			case 'light':
+				button.toggle();
+			  isOn = !isOn;
+			  break;
+			case 'lampLight':
+				button2.toggle();
+				isOn2 = !isOn2;
+			  break;
+			}
+		  }
+		}
+		
+		function animate() {
+		  controls.update();
+		  spotLight.intensity = (isOn === true) ? 0.8 : 0;
+		  lampLight.intensity = (isOn2 === true) ? 0.7 : 0;
+		  lampLight.castShadow = (isOn2 === true) ? true: false;
+		  requestAnimationFrame(animate);
+		  renderer.render(scene, camera);
+		}
+
+	</script>
+</body>
+</html>
