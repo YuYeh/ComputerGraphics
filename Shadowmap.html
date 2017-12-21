@@ -35,15 +35,20 @@
 		var pickables = [];
 		var isOn, isOn2,spotLight, lampLight;
 		var mouse = new THREE.Vector2();
-		
+		const KP = 300, KD =6;
+		const KP2 = 300, KD2 =6;
+		var yy = 0, vv = 0, yy2 = 0, vv2 = 0;
+		var gravity = true;
+		var yref = 1, yref2 = 1;
+
 		init();
 		animate();
 
 		function buildGrip() {
 			var grip = new THREE.Object3D();
-		  loader.setCrossOrigin ('');  
+		  loader.setCrossOrigin ('');
 		  let griptexture = loader.load( "images/plastic.jpg");
-		  var gripMaterial = new THREE.MeshLambertMaterial({map: griptexture});
+		  var gripMaterial = new THREE.MeshPhongMaterial({map: griptexture});
 		  var gripMesh = new THREE.Mesh(new THREE.BoxGeometry(8,1,1),gripMaterial);
 		  gripMesh.position.z = 1.25;
 		  grip.add(gripMesh);
@@ -55,12 +60,16 @@
 		  grip.add(gripMesh3);
 		  return grip;
 		}
-		
+
+		funciton buildPen() {
+
+		}
+
 		function buildHalfPenHolder() {
-		
-			loader.setCrossOrigin (''); 
+
+			loader.setCrossOrigin ('');
 			let texture = loader.load( "images/penHolder.jpg");
-			var material = new THREE.MeshLambertMaterial({map: texture});
+			var material = new THREE.MeshPhongMaterial({map: texture});
 			var penHolderMesh = new THREE.Object3D();
 			var part1 = new THREE.Mesh(new THREE.CubeGeometry(5,0.5,0.5),material);
 			part1.position.z = 2.25;
@@ -76,10 +85,10 @@
 			penHolderMesh.add(part4);
 			return penHolderMesh;
 		}
-		
+
 		function buildPenHolder() {
 			var penHolder = new THREE.Object3D();
-			var material = new THREE.MeshLambertMaterial();
+			var material = new THREE.MeshPhongMaterial();
 			var part1 = buildHalfPenHolder();
 			part1.position.y = 5.55;
 			penHolder.add(part1);
@@ -91,19 +100,19 @@
 			var part3 = new THREE.Mesh(new THREE.CubeGeometry(5,0.1,5),material);
 			part3.position.y = 0.05;
 			penHolder.add(part3);
-			
+
 			var part4 = new THREE.Mesh(new THREE.CubeGeometry(0.5,4.75,0.5),material);
 			part4.position.set(-2.25,2.925,-2.25);
 			penHolder.add(part4);
 			return penHolder;
 		}
-		
+
 		function buildRemoteControl() {
 			var remoteControl = new THREE.Object3D();
-			loader.setCrossOrigin (''); 
+			loader.setCrossOrigin ('');
 			let texture = loader.load( "images/remoteControl.jpg");
-			var material = new THREE.MeshLambertMaterial({map: texture});
-			
+			var material = new THREE.MeshPhongMaterial({map: texture});
+
 			var frame1 = new  THREE.Mesh(new THREE.CubeGeometry(0.5,1.75,5.5),material);
 			frame1.position.set(1.75,0.875,0);
 			remoteControl.add(frame1);
@@ -122,7 +131,7 @@
 			var frame6 = new  THREE.Mesh(new THREE.CubeGeometry(3,0.5,4.5),material);
 			frame6.position.y =0.25;
 			remoteControl.add(frame6);
-		  
+
 			button = new Button(new THREE.Color (0x12ffff), 'light');
 			remoteControl.add(button.obj);
 			button.obj.position.set(0,0.5,-1.25);
@@ -135,36 +144,36 @@
 
 			return remoteControl;
 		}
-		
+
 		function buildDesk() {
 			var desk = new THREE.Object3D();
-		  loader.setCrossOrigin ('');  
+		  loader.setCrossOrigin ('');
 		  let wood = loader.load( "images/wood2.jpg" );
 		  let wood2 = loader.load( "images/wood.jpg" );
 		  let single = loader.load( "images/locker.jpg");
 		  let double = loader.load( "images/locker2.jpg");
 		  let leg = loader.load( "images/stainless_steel.jpg") ;
 		  let leg2 = loader.load( "images/stainless_steel2.jpg" );
-		  
+
 		  var singleLocker = [
-			new THREE.MeshLambertMaterial({map: wood2}),// +x
-			new THREE.MeshLambertMaterial({map: wood2}),// -x
-			new THREE.MeshLambertMaterial({map: wood}),// +y
-			new THREE.MeshLambertMaterial({map: wood}),// -Y
-			new THREE.MeshLambertMaterial({map: single}),// +z
-			new THREE.MeshLambertMaterial({map: wood})// -Z
+			new THREE.MeshPhongMaterial({map: wood2}),// +x
+			new THREE.MeshPhongMaterial({map: wood2}),// -x
+			new THREE.MeshPhongMaterial({map: wood}),// +y
+			new THREE.MeshPhongMaterial({map: wood}),// -Y
+			new THREE.MeshPhongMaterial({map: single}),// +z
+			new THREE.MeshPhongMaterial({map: wood})// -Z
 		  ];
 		  var doubleLocker = [
-			new THREE.MeshLambertMaterial({map: wood2}),// +x
-			new THREE.MeshLambertMaterial({map: wood2}),// -x
-			new THREE.MeshLambertMaterial({map: wood}),// +y
-			new THREE.MeshLambertMaterial({map: wood}),// -Y
-			new THREE.MeshLambertMaterial({map: double}),// +z
-			new THREE.MeshLambertMaterial({map: wood})// -Z
+			new THREE.MeshPhongMaterial({map: wood2}),// +x
+			new THREE.MeshPhongMaterial({map: wood2}),// -x
+			new THREE.MeshPhongMaterial({map: wood}),// +y
+			new THREE.MeshPhongMaterial({map: wood}),// -Y
+			new THREE.MeshPhongMaterial({map: double}),// +z
+			new THREE.MeshPhongMaterial({map: wood})// -Z
 		  ];
-		  var material = new THREE.MeshLambertMaterial({map: wood});
-		  var legMaterial = new THREE.MeshLambertMaterial({map: leg});
-		  var legMaterial2 = new THREE.MeshLambertMaterial({map: leg2});
+		  var material = new THREE.MeshPhongMaterial({map: wood});
+		  var legMaterial = new THREE.MeshPhongMaterial({map: leg});
+		  var legMaterial2 = new THREE.MeshPhongMaterial({map: leg2});
 		  var singleMaterial = new THREE.MultiMaterial(singleLocker);
 		  var doubleMaterial = new THREE.MultiMaterial(doubleLocker);
 		  var base = new THREE.Mesh(new THREE.BoxGeometry(80,3,40),material);
@@ -188,7 +197,7 @@
 		  var locker2 = new THREE.Mesh(new THREE.BoxGeometry(24,20,40),doubleMaterial);
 		  locker2.position.set(-27,27,0);
 		  desk.add(locker2);
-		  
+
 		  var grip = buildGrip();
 		  grip.position.set(27,32,20.25);
 		  desk.add(grip);
@@ -198,11 +207,11 @@
 		  var grip3 = buildGrip();
 		  grip3.position.set(-27,22,20.25);
 		  desk.add(grip3);
-		  
+
 		  var partition = new THREE.Mesh(new THREE.BoxGeometry(32,18,2),material);
 		  partition.position.set(0,27,-17);
 		  desk.add(partition);
-		 
+
 		  var leg5 = new THREE.Mesh(new THREE.BoxGeometry(3,3,22),legMaterial2);
 		  desk.add(leg5);
 		  leg5.position.set(-27,1.5,0);
@@ -217,43 +226,44 @@
 		  renderer = new THREE.WebGLRenderer({antialias: true});
 		  renderer.setSize(window.innerWidth, window.innerHeight);
 		  renderer.setClearColor(0x404040);
-		  
+
 		  document.body.appendChild(renderer.domElement);
 		  document.addEventListener('mousedown', onDocumentMouseDown, false);
 
 		  camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 1, 10000);
 		  camera.position.z = 200;
 		  controls = new THREE.OrbitControls(camera, renderer.domElement);
-		  
+
 		  var gridXZ = new THREE.GridHelper(200, 20, 'red', 'white');
 		  //scene.add(gridXZ);
-		 
+
 		  var penHolder = buildPenHolder();
 		  penHolder.position.set(-5,46,-2);
+			penHolder.rotation.y = Math.PI/6;
 		  scene.add(penHolder);
-			
+
 		  let loader = new THREE.TextureLoader();
 		  loader.setCrossOrigin ('');
 		  let floorMap = loader.load( "images/floor.jpg" );
 		  floorMap.wrapS = THREE.RepeatWrapping;
 		  floorMap.wrapT = THREE.RepeatWrapping;
 		  floorMap.repeat.set(6, 6);
-		 
-		  var floor = new THREE.Mesh(new THREE.PlaneGeometry(200, 200, 140, 140), new  THREE.MeshLambertMaterial(
+
+		  var floor = new THREE.Mesh(new THREE.PlaneGeometry(200, 200, 14, 14), new  THREE.MeshPhongMaterial(
 		  { map: floorMap,
 		    side: THREE.DoubleSide}
 			));
 		  floor.rotation.x = -Math.PI / 2;
 		  scene.add(floor);
-		  
+
 		  var desk = buildDesk();
 		  scene.add(desk);
 
 		  var remoteControl = buildRemoteControl();
-		  remoteControl.position.set(28,46,10);
+		  remoteControl.position.set(20,46,10);
 		  remoteControl.rotation.y = -Math.PI/6;
 		  scene.add(remoteControl);
-		
+
 		  var onProgress = function(xhr) {
 						if (xhr.lengthComputable) {
 							var percentComplete = xhr.loaded / xhr.total * 100;
@@ -263,7 +273,7 @@
 		  var onError = function(xhr) {};
 			var mtlLoader = new THREE.MTLLoader();
 			mtlLoader.setPath('resources/');
-			mtlLoader.load('lamp-2.mtl', function(materials) {		
+			mtlLoader.load('lamp-2.mtl', function(materials) {
 					materials.preload();
 
 					var objLoader = new THREE.OBJLoader();
@@ -275,7 +285,7 @@
 						lamp.position.set(-25,46,-10);
 						lamp.rotation.y = -Math.PI/6;
 						scene.add (lamp);
-						
+
 						//scene.add (new THREE.BoxHelper (lamp));
 
 						//////// MATERIAL ADJUSTMENT for porsche ///////////////
@@ -292,14 +302,46 @@
 
 				}, onProgress, onError);
 			});
+
+			mtlLoader.load('stay.mtl', function(materials) {
+					materials.preload();
+
+					var objLoader = new THREE.OBJLoader();
+					objLoader.setMaterials(materials);
+					objLoader.setPath('resources/');
+					objLoader.load('stay.obj', function(object) {
+
+						var chair =  unitize (object,60);
+						chair.position.set(35,-3,40);
+						chair.rotation.z = Math.PI/2;
+						chair.rotation.y = Math.PI/3;
+						scene.add (chair);
+
+						//scene.add (new THREE.BoxHelper (lamp));
+
+						//////// MATERIAL ADJUSTMENT for porsche ///////////////
+						// transparent window: double-side fix
+						chair.traverse (
+							function(mesh) {
+								if (mesh instanceof THREE.Mesh) {
+									mesh.material.side = THREE.DoubleSide;
+									mesh.castShadow = true;
+									mesh.receiveShadow = true;
+								}
+							});
+
+
+				}, onProgress, onError);
+			});
+
 		  var light = new THREE.AmbientLight(0x888888,0.5); // soft white light
 		  scene.add(light);
-		  
+
 		  spotLight = new THREE.SpotLight(0xffffff,2);
 		  spotLight.position.set(0,200,40);
 		  spotLight.angle = Math.PI / 3;
 		  spotLight.penumbra = 0.6;
-		  
+
 		  spotLight.castShadow = true;
 		  spotLight.shadow.mapSize.width = 1024;
 		  spotLight.shadow.mapSize.height = 1024;
@@ -309,32 +351,33 @@
 		  scene.add(spotLight);
 		  //scene.add( new THREE.SpotLightHelper( spotLight ) );
 		  //scene.add ( new THREE.CameraHelper (spotLight.shadow.camera) );
-		  
+
 		  lampLight = new THREE.SpotLight(0xffffff);
 		  lampLight.position.set(-24, 67, -7);
-		  lampLight.angle = Math.PI/4;
-		  lampLight.distance = 300;
-		  lampLight.target = remoteControl;
+		  lampLight.angle = Math.PI/5;
+		  lampLight.distance = 100;
+		  //lampLight.target = remoteControl;
+			lampLight.target.position.set(0,46,0);
 		  lampLight.penumbra = 0.6;
-		  
+
 		  lampLight.castShadow = true;
-		  
+
 		  lampLight.shadow.mapSize.width = 1024;
 		  lampLight.shadow.mapSize.height = 1024;
 		  lampLight.shadow.camera.near = 10;
 		  lampLight.shadow.camera.far = 200;
 		  lampLight.shadow.camera.fov = 50;
-		  
+
 		  scene.add(lampLight);
 		  scene.add(lampLight.target);
 		  //scene.add( new THREE.SpotLightHelper( lampLight ) );
 		  //scene.add ( new THREE.CameraHelper (lampLight.shadow.camera) );
-		  
+
 		  renderer.shadowMap.enabled = true;
 		  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-		  
+
 		  floor.receiveShadow = true;
-		  
+
 		  desk.traverse (
 		   function (mesh) {
 			 if (mesh instanceof THREE.Mesh) {
@@ -343,7 +386,7 @@
 			  }
 			}
 		  );
-		  
+
 		  penHolder.traverse (
 		   function (mesh) {
 			 if (mesh instanceof THREE.Mesh) {
@@ -352,20 +395,21 @@
 			  }
 			}
 		  );
-		  
+
 		  remoteControl.traverse (
 		   function (mesh) {
-			 if (mesh instanceof THREE.Mesh) {
-			   mesh.castShadow = true;
-				mesh.receiveShadow = true;
-			  }
-			}
+			 	if (mesh instanceof THREE.Mesh) {
+			   	mesh.castShadow = true;
+				 	mesh.receiveShadow = true;
+			  	}
+				}
 		  );
+
 		  window.addEventListener('resize', onWindowResize, false);
 		}
 
-		function unitize (object, targetSize) {  
-	
+		function unitize (object, targetSize) {
+
 			// find bounding box of 'object'
 			var box3 = new THREE.Box3();
 			box3.setFromObject (object);
@@ -373,22 +417,22 @@
 			size.subVectors (box3.max, box3.min);
 			var center = new THREE.Vector3();
 			center.addVectors(box3.max, box3.min).multiplyScalar (0.5);
-			
+
 			console.log ('center: ' + center.x + ', '+center.y + ', '+center.z );
 			console.log ('size: ' + size.x + ', ' +  size.y + ', '+size.z );
-			
+
 			// uniform scaling according to objSize
 			var objSize = findMax (size);
 			var scaleSet = targetSize/objSize;
-						
+
 			var theObject =  new THREE.Object3D();
 			theObject.add (object);
 			object.scale.set (scaleSet, scaleSet, scaleSet);
 			object.position.set (-center.x*scaleSet, -center.y*scaleSet + size.y/2*scaleSet, -center.z*scaleSet);
 			object.rotation.y = Math.PI/2;
 			return theObject;
-			
-			
+
+
 			// helper function
 			function findMax(v) {
 				if (v.x > v.y) {
@@ -397,9 +441,9 @@
 					return v.y > v.z ? v.y : v.z;
 				}
 			}
-					
+
 		}
-		
+
 		function onWindowResize() {
 		  camera.aspect = window.innerWidth / window.innerHeight;
 		  camera.updateProjectionMatrix();
@@ -429,12 +473,32 @@
 			}
 		  }
 		}
-		
+
+		function feedbackForce (yy, yref, vv) {
+			let f = -KP*(yy - yref) - KD*vv;
+		  return f;
+		}
+
 		function animate() {
 		  controls.update();
-		  spotLight.intensity = (isOn === true) ? 0.8 : 0;
-		  lampLight.intensity = (isOn2 === true) ? 0.7 : 0;
-		  lampLight.castShadow = (isOn2 === true) ? true: false;
+
+			var f = feedbackForce(yy, yref, vv);
+			var f2 = feedbackForce(yy2, yref2, vv2);
+			if (gravity) {
+				f += (-20.8);
+				f2 += (-20.8);
+			}
+		  let dt = 0.01;
+		  vv += f*dt;
+		  yy += vv*dt
+			vv2 += f2*dt;
+			yy2 += vv2*dt;
+			yref = (isOn === true) ? 1 : 0;
+			yref2 = (isOn2 === true) ? 1 : 0;
+
+		  spotLight.intensity =  (isOn === true) ? (yy > 0.85 )  ? 0.7:0  : 0;
+		  lampLight.intensity = (isOn2 === true) ? (yy2 > 0.85 ) ? 1.5:0  : 0;
+
 		  requestAnimationFrame(animate);
 		  renderer.render(scene, camera);
 		}
