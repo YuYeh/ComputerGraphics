@@ -61,9 +61,28 @@
 		  return grip;
 		}
 
-		/*funciton buildPen() {
-
-		}*/
+		function buildPen() {
+			var pen = new THREE.Object3D();
+			loader.setCrossOrigin ('');  
+			let bodyTexture = loader.load( "images/body.jpg");
+			loader.setCrossOrigin ('');  
+			let headTexture = loader.load( "images/wood.jpg");
+			loader.setCrossOrigin ('');  
+			let nibTexture = loader.load( "images/carbon.jpg");
+			var bodyMaterial = new THREE.MeshLambertMaterial({map:bodyTexture});
+			var headmaterial = new THREE.MeshLambertMaterial({map:headTexture});
+			var nibmaterial = new THREE.MeshLambertMaterial({map:nibTexture});
+			var base = new THREE.Mesh(new THREE.CylinderGeometry(0.3,0.3,7.5,6),bodyMaterial);
+			base.position.y = 3.75;
+			pen.add(base);
+			var base2 = new THREE.Mesh(new THREE.CylinderGeometry(0.1,0.3,0.7,6),headmaterial);
+			base2.position.y = 7.85;
+			pen.add(base2);
+			var base3 = new THREE.Mesh(new THREE.CylinderGeometry(0,0.1,0.3,6),nibmaterial);
+			base3.position.y = 8.35;
+			pen.add(base3);
+			return pen;
+			}
 
 		function buildHalfPenHolder() {
 
@@ -231,7 +250,7 @@
 		  document.addEventListener('mousedown', onDocumentMouseDown, false);
 
 		  camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 1, 10000);
-		  camera.position.z = 200;
+		  camera.position.set( 40,150,150);
 		  controls = new THREE.OrbitControls(camera, renderer.domElement);
 
 		  var gridXZ = new THREE.GridHelper(200, 20, 'red', 'white');
@@ -239,9 +258,15 @@
 
 		  var penHolder = buildPenHolder();
 		  penHolder.position.set(-5,46,-2);
-			penHolder.rotation.y = Math.PI/6;
+		  penHolder.rotation.y = Math.PI/6;
 		  scene.add(penHolder);
 
+		  var pen = buildPen();
+		  pen.position.set(-7,46.22,-2.84);
+		  pen.rotation.z = -Math.PI/5.62;
+		  pen.rotation.y = -Math.PI/3.8;		 
+		  scene.add(pen);	
+		  
 		  let loader = new THREE.TextureLoader();
 		  loader.setCrossOrigin ('');
 		  let floorMap = loader.load( "images/floor.jpg" );
@@ -333,6 +358,69 @@
 
 				}, onProgress, onError);
 			});
+			
+			mtlLoader.load('book-of-red-dust.mtl', function(materials) {
+					materials.preload();
+
+					var objLoader = new THREE.OBJLoader();
+					objLoader.setMaterials(materials);
+					objLoader.setPath('resources/');
+					objLoader.load('book-of-red-dust.obj', function(object) {
+
+						var book =  unitize (object,20);
+						book.rotation.y = Math.PI/2;
+						book.rotation.z = -Math.PI/2;
+						book.position.set(0,46,17);
+						scene.add (book);
+
+						//scene.add (new THREE.BoxHelper (lamp));
+
+						//////// MATERIAL ADJUSTMENT for porsche ///////////////
+						// transparent window: double-side fix
+						book.traverse (
+							function(mesh) {
+								if (mesh instanceof THREE.Mesh) {
+									mesh.material.side = THREE.DoubleSide;
+									mesh.castShadow = true;
+									mesh.receiveShadow = true;
+								}
+							});
+
+
+				}, onProgress, onError);
+			});
+			
+			mtlLoader.load('books.mtl', function(materials) {
+					materials.preload();
+
+					var objLoader = new THREE.OBJLoader();
+					objLoader.setMaterials(materials);
+					objLoader.setPath('resources/');
+					objLoader.load('books.obj', function(object) {
+
+						var book =  unitize (object,20);
+						book.rotation.x = Math.PI/120;
+						book.rotation.y = -Math.PI/3;
+						book.rotation.z = Math.PI/2;
+						book.position.set(20,47.2,-5);
+						scene.add (book);
+
+						//scene.add (new THREE.BoxHelper (lamp));
+
+						//////// MATERIAL ADJUSTMENT for porsche ///////////////
+						// transparent window: double-side fix
+						book.traverse (
+							function(mesh) {
+								if (mesh instanceof THREE.Mesh) {
+									mesh.material.side = THREE.DoubleSide;
+									mesh.castShadow = true;
+									mesh.receiveShadow = true;
+								}
+							});
+
+
+				}, onProgress, onError);
+			});
 
 		  var light = new THREE.AmbientLight(0x888888,0.5); // soft white light
 		  scene.add(light);
@@ -396,6 +484,15 @@
 			}
 		  );
 
+		  pen.traverse (
+		   function (mesh) {
+			 if (mesh instanceof THREE.Mesh) {
+			   mesh.castShadow = true;
+				mesh.receiveShadow = true;
+			  }
+			}
+		  );	
+		  
 		  remoteControl.traverse (
 		   function (mesh) {
 			 	if (mesh instanceof THREE.Mesh) {
