@@ -24,7 +24,7 @@ class Button {
     	this.obj.children[0].material.color.setHSL 
          (this.hsl.h, this.hsl.s, this.hsl.l);
     }
-  }  
+  }
 
   makeButton(name) {
     let mesh = new THREE.Mesh(new THREE.BoxGeometry(3, 2, 2),
