@@ -47,12 +47,12 @@
     varying vec3 eyenormal, eyelightdir;
 
 		void main() {
-			float VdotL = dot (normalize(eyenormal), eyelightdir);
+			float NdotL = dot (normalize(eyenormal), eyelightdir);
 
-      vec3 Kcdiff = vec3(255./255.,174./255.,63./255.) + 0.25*VdotL;
-			vec3 Kwdiff = vec3(122./255.,122./255.,216./255.) + 0.55*VdotL;
+      vec3 Kcdiff = vec3(255./255.,174./255.,63./255.) + 0.25*NdotL;
+			vec3 Kwdiff = vec3(122./255.,122./255.,216./255.) + 0.55*NdotL;
 
-			gl_FragColor = vec4(((1.+VdotL)/2.)*Kcdiff + (1.-(1.+VdotL)/2.)*Kwdiff, opacity);
+			gl_FragColor = vec4(((1.+NdotL)/2.)*Kcdiff + (1.-(1.+NdotL)/2.)*Kwdiff, opacity);
 
 		}
 	</script>

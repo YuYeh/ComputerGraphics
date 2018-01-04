@@ -11,6 +11,9 @@
  * ✅ [OBJ model, Kinematic Drive, Rectangle-Circle Intersection, Dual Viewports](https://yuyeh.github.io/cghw/Car.html)
  * ✅ [Class, Raycaster, Shadow Map](https://yuyeh.github.io/cghw/Shadowmap.html)
 
+* ✅ [Basic GLSL example: coordinate vs shading (with select/option)](https://yuyeh.github.io/cghw/BasicGLSLExample.html)
+
+* ✅ [Class, Raycaster, Shadow Map](https://yuyeh.github.io/cghw/GLSLInTeapotClass.html)
 
 #### Time-based animation, button
 
@@ -29,3 +32,37 @@ Hierarchical model 簡單來說就是模擬一台戰車的一些基本動作，[
 #### Class, Raycaster, Shadow Map
 
 基本上此 Shadow Map 主要是模擬房間內書桌以及一些相關事物的模擬，書桌靠右邊有一個遙控器，上方按鈕控制室內的燈光，下方按鈕控制檯燈的燈光，就類似於物聯網靠一個app就能控制所有設備，使用者們可以藉由各個角度，去觀察各燈光開與關時，各個物件光影的變化(特別推薦地板)。椅子有點精緻，所以在載入時會比較慢出現，一開始若未看到椅子請等待一下(依顯卡效能而定)。
+
+#### Basic GLSL example: coordinate vs shading (with select/option)
+
+這裡主要是演示 GLSL 的一些基本呈現，在不同的 coordinate 、 shading 以及在頂點或像素進行顏色的運算，其最後呈現出來的結果也會有些許不同， 在 Object coordinate 中，是以物件自身的座標系統進行運算、在 World coordinate 中則是以世界的座標系統進行運算，最後 Eye coordinate 是藉由當前視角的眼睛座標系統進行運算，隨著視角的移動，眼睛座標系統也會跟著變化。 
+
+運算位置方面， Per Vertex 是在物件的每個頂點進行運算處理，也就是在 javascript 中， type="x-shader/x-vertex" 這部分進行運算，而 Per Pixel 則是在像素進行運算處理，就是在 javascript 內， type="x-shader/x-fragment" 這裡進行運算。
+
+最後Shading方面，Gooch shading 是藉由 以下公式 :
+    <br>Kcdiff = Kcool + αKdiffuse
+    <br>Kwdiff = Kwarm + βKdiffuse
+    <br>Kfinal = [ ( 1 + N．L ) / 2 ] * Kcdiff + [1 - ( 1 + N．L ) / 2 ] * Kwdiff    
+在 javascript 中 type="x-shader/x-fragment" 進行顏色的運算，其詳細的原理可以點選 [這裡](https://lva.cg.tuwien.ac.at/ecg/wiki/doku.php?id=students:gooch) 了解。
+
+#### Class, Raycaster, Shadow Map
+
+這裡主要是將 GLSL 運用在 Class 中，在畫面中每點選一個位置便會生成一個 teapot ，該 teapot 會在點選的位置上進行自轉，每個 teapot 都有自己的生命值(預設100)，其生命值會隨時間漸漸減少、自轉速度隨著時間漸漸降低，透明度隨時間漸漸提高，點選場地上的 teapot 可以使該 teapot 停止自轉(生命值、透明度也會停止變化)，當 teapot 的生命值歸零時，會從場地上移除。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -58,12 +58,8 @@
 			}
 		}
 
-		// your homework
-		void perPixelShading() {
-			objpos = position;
-		}
-
 		void main() {
+			objpos = position;
 			gl_Position = projectionMatrix* modelViewMatrix * vec4( position, 1.0);
 			worldpos = modelMatrix * vec4 (position, 1.0);
 			eyepos = modelViewMatrix * vec4 (position, 1.0);
@@ -71,10 +67,8 @@
 			eyelightdir = normalize (eyelightpos.xyz - eyepos.xyz);
 			eyenormal = normalMatrix * normal;
 
-		if (shading == 0)  // per-vertex shading
+		    // per-vertex shading
 			perVertexShading(position, worldpos.xyz, eyepos.xyz);
-		else
-			perPixelShading();
 		}
 	</script>
 
@@ -86,10 +80,10 @@
 		varying vec3 eyenormal, eyelightdir;
 
 		void main() {
-			float VdotL = dot (normalize(eyenormal), normalize(eyelightdir));
+			float NdotL = dot (normalize(eyenormal), normalize(eyelightdir));
 
-			vec3 Kcdiff = vec3(255./255.,174./255.,63./255.) + 0.25*VdotL;
-			vec3 Kwdiff = vec3(122./255.,122./255.,216./255.) + 0.35*VdotL;
+			vec3 Kcdiff = vec3(255./255.,174./255.,63./255.) + 0.25*NdotL;
+			vec3 Kwdiff = vec3(122./255.,122./255.,216./255.) + 0.35*NdotL;
 
 			if (shading == 1 ) {
 				if (coordinate == 0) {
@@ -103,7 +97,7 @@
 			if (section ==0) {
 				gl_FragColor = shading == 1 ? vec4 (color2, 1.0) : vec4 (color, 1.0);
 			} else if (section == 1) {
-				gl_FragColor = vec4( ( ( 1. + VdotL ) / 2. ) * Kcdiff + ( 1. - (  1. + VdotL ) / 2. ) * Kwdiff, 1.0);
+				gl_FragColor = vec4( ( ( 1. + NdotL ) / 2. ) * Kcdiff + ( 1. - (  1. + NdotL ) / 2. ) * Kwdiff, 1.0);
 			}
 		}
 	</script>
@@ -286,7 +280,7 @@
 		 lightmodel.position.copy(pointLight.position);
 	}
     if (movingTeapot !== undefined) {
-  	movingTeapot.position.set (70*Math.cos(angle), 0, 70*Math.sin(angle));
+		movingTeapot.position.set (70*Math.cos(angle), 0, 70*Math.sin(angle));
     }
 
 	teapotMaterial.uniforms.lightpos.value.copy(pointLight.position);
