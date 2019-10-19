@@ -20,7 +20,7 @@
 
 <body>
 	<div id="info">Class, Raycaster, Shadow Map</div>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/84/three.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/109/three.min.js"></script>
 	<script src="https://threejs.org/examples/js/controls/OrbitControls.js"></script>
 	<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
 	<script src="https://rawgit.com/mrdoob/three.js/master/examples/js/loaders/MTLLoader.js"></script>
@@ -297,8 +297,8 @@
 					};
 		  var onError = function(xhr) {};
 			var mtlLoader = new THREE.MTLLoader();
-			mtlLoader.setPath('resources/');
-			mtlLoader.load('lamp-2.mtl', function(materials) {
+			//mtlLoader.setPath('resources/');
+			mtlLoader.load('resources/lamp-2.mtl', function(materials) {
 					materials.preload();
 
 					var objLoader = new THREE.OBJLoader();
@@ -328,7 +328,7 @@
 				}, onProgress, onError);
 			});
 
-			mtlLoader.load('stay.mtl', function(materials) {
+			mtlLoader.load('resources/stay.mtl', function(materials) {
 					materials.preload();
 
 					var objLoader = new THREE.OBJLoader();
@@ -359,7 +359,7 @@
 				}, onProgress, onError);
 			});
 			
-			mtlLoader.load('book-of-red-dust.mtl', function(materials) {
+			mtlLoader.load('resources/book-of-red-dust.mtl', function(materials) {
 					materials.preload();
 
 					var objLoader = new THREE.OBJLoader();
@@ -390,7 +390,7 @@
 				}, onProgress, onError);
 			});
 			
-			mtlLoader.load('books.mtl', function(materials) {
+			mtlLoader.load('resources/books.mtl', function(materials) {
 					materials.preload();
 
 					var objLoader = new THREE.OBJLoader();

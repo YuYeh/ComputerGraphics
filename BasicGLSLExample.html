@@ -36,8 +36,9 @@
 			<option value="gooch">Gooch Shaded Teapot</option>
 		</select>
 	</div>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/84/three.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/109/three.min.js"></script>
 	<script src="https://threejs.org/examples/js/controls/OrbitControls.js"></script>
+	<script src="https://rawgit.com/mrdoob/three.js/master/examples/js/loaders/deprecated/LegacyJSONLoader.js"></script>	
 	<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
 
 	<script id="myVertexShader" type="x-shader/x-vertex">
@@ -130,13 +131,13 @@
 			let objType = $(this).val();
 			if (objType === 'basic') {
 				teapotMaterial.uniforms.section.value = 0;
-				jsonModel.material = new THREE.MeshPhongMaterial();
+				legacyjsonModel.material = new THREE.MeshPhongMaterial();
 				scene.add(movingTeapot);
 				scene.remove(lightmodel);
 				pointLight.position.set(200, 300, 200);
 			} else {
 				teapotMaterial.uniforms.section.value = 1;
-				jsonModel.material = teapotMaterial;
+				legacyjsonModel.material = teapotMaterial;
 				scene.remove(movingTeapot);
 				scene.add(lightmodel);
 			}
@@ -146,7 +147,7 @@
   var controls;
   var theTeapot, movingTeapot;
   var angle = 0;
-  var teapotMaterial, jsonModel;
+  var teapotMaterial, legacyjsonModel;
   var pointLight, lightmodel;
   var plane, raycaster;
   var mouse = new THREE.Vector2();
@@ -196,23 +197,23 @@
       fragmentShader: document.getElementById('myFragmentShader').textContent
     });
 
-    var jsonLoader = new THREE.JSONLoader();
+    var legacyjsonLoader = new THREE.LegacyJSONLoader();
 
     //var url = "teapot.json";
     var url = 'https://raw.githubusercontent.com/jyunming-chen/tutsplus/master/models/teapot.json';
-    jsonLoader.load(url, function(geometry, materials) {
+    legacyjsonLoader.load(url, function(geometry, materials) {
       //var material = new THREE.MeshFaceMaterial(materials);
-      jsonModel = new THREE.Mesh(geometry, new THREE.MeshPhongMaterial());
+      legacyjsonModel = new THREE.Mesh(geometry, new THREE.MeshPhongMaterial());
 
-      theTeapot = unitize (jsonModel, 50);
+      theTeapot = unitize (legacyjsonModel, 50);
       scene.add(theTeapot);
 
 	  lightmodel = new THREE.Mesh(new THREE.SphereGeometry(3, 16, 16), new THREE.MeshBasicMaterial({
 		color: 0xffff00
 	  }));
 
-      jsonModel2 = new THREE.Mesh(geometry, teapotMaterial);
-       movingTeapot = unitize (jsonModel2, 50);
+      legacyjsonModel2 = new THREE.Mesh(geometry, teapotMaterial);
+       movingTeapot = unitize (legacyjsonModel2, 50);
 
       movingTeapot.position.set(70, 0, 0);
       scene.add(movingTeapot);
