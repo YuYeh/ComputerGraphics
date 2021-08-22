@@ -20,7 +20,7 @@
 
 <body>
 	<div id="info">Class, Raycaster, Shadow Map</div>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/109/three.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 	<script src="https://threejs.org/examples/js/controls/OrbitControls.js"></script>
 	<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
 	<script src="https://rawgit.com/mrdoob/three.js/master/examples/js/loaders/MTLLoader.js"></script>
@@ -90,16 +90,16 @@
 			let texture = loader.load( "images/penHolder.jpg");
 			var material = new THREE.MeshPhongMaterial({map: texture});
 			var penHolderMesh = new THREE.Object3D();
-			var part1 = new THREE.Mesh(new THREE.CubeGeometry(5,0.5,0.5),material);
+			var part1 = new THREE.Mesh(new THREE.BoxGeometry(5,0.5,0.5),material);
 			part1.position.z = 2.25;
 			penHolderMesh.add(part1);
-			var part2 = new THREE.Mesh(new THREE.CubeGeometry(0.5,0.5,4.5),material);
+			var part2 = new THREE.Mesh(new THREE.BoxGeometry(0.5,0.5,4.5),material);
 			part2.position.set(2.25, 0,-0.25);
 			penHolderMesh.add(part2);
-			var part3 = new THREE.Mesh(new THREE.CubeGeometry(4.5,0.5,0.5),material);
+			var part3 = new THREE.Mesh(new THREE.BoxGeometry(4.5,0.5,0.5),material);
 			part3.position.set(-0.25,0,-2.25);
 			penHolderMesh.add(part3);
-		    var part4 = new THREE.Mesh(new THREE.CubeGeometry(0.5,0.5,3.5),material);
+		    var part4 = new THREE.Mesh(new THREE.BoxGeometry(0.5,0.5,3.5),material);
 			part4.position.set(-2.25,0,0.25);
 			penHolderMesh.add(part4);
 			return penHolderMesh;
@@ -116,11 +116,11 @@
 			part2.rotation.y= Math.PI/2;
 			part2.position.y = 0.3;
 			penHolder.add(part2);
-			var part3 = new THREE.Mesh(new THREE.CubeGeometry(5,0.1,5),material);
+			var part3 = new THREE.Mesh(new THREE.BoxGeometry(5,0.1,5),material);
 			part3.position.y = 0.05;
 			penHolder.add(part3);
 
-			var part4 = new THREE.Mesh(new THREE.CubeGeometry(0.5,4.75,0.5),material);
+			var part4 = new THREE.Mesh(new THREE.BoxGeometry(0.5,4.75,0.5),material);
 			part4.position.set(-2.25,2.925,-2.25);
 			penHolder.add(part4);
 			return penHolder;
@@ -132,13 +132,13 @@
 			let texture = loader.load( "images/remoteControl.jpg");
 			var material = new THREE.MeshPhongMaterial({map: texture});
 
-			var frame1 = new  THREE.Mesh(new THREE.CubeGeometry(0.5,1.75,5.5),material);
+			var frame1 = new  THREE.Mesh(new THREE.BoxGeometry(0.5,1.75,5.5),material);
 			frame1.position.set(1.75,0.875,0);
 			remoteControl.add(frame1);
 			var frame2 =frame1.clone();
 			frame2.position.x = -1.75;
 			remoteControl.add(frame2);
-			var frame3 = new  THREE.Mesh(new THREE.CubeGeometry(3,1.75,0.5),material);
+			var frame3 = new  THREE.Mesh(new THREE.BoxGeometry(3,1.75,0.5),material);
 			frame3.position.set(0,0.875,2.5);
 			remoteControl.add(frame3);
 			var frame4 = frame3.clone();
@@ -147,7 +147,7 @@
 			var frame5 = frame3.clone();
 			frame5.position.z = -2.5;
 			remoteControl.add(frame5);
-			var frame6 = new  THREE.Mesh(new THREE.CubeGeometry(3,0.5,4.5),material);
+			var frame6 = new  THREE.Mesh(new THREE.BoxGeometry(3,0.5,4.5),material);
 			frame6.position.y =0.25;
 			remoteControl.add(frame6);
 
