@@ -22,7 +22,7 @@
 		<button id = 'style' >Quartz</button>
 	</div>
 	<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/109/three.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 	<script src="https://threejs.org/examples/js/controls/OrbitControls.js"></script>
 	<script>
 		var randerer, camera, controls, scene, axes;
@@ -78,7 +78,7 @@
 			var scale = new THREE.Object3D();
 			var one_quarter = new THREE.Object3D();
 			var material = new THREE.MeshBasicMaterial({color:0xEBF2EA});
-			var three = new THREE.Mesh(new THREE.CubeGeometry(8,0.8,0.8), material);
+			var three = new THREE.Mesh(new THREE.BoxGeometry(8,0.8,0.8), material);
 		  var nine = three.clone();
 		  var six = three.clone();
 		  var twelve = three.clone();
@@ -130,7 +130,7 @@
 		  camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 1, 1000);
 		  camera.position.z = 100;
 		  
-		  controls = new THREE.OrbitControls(camera, renderer.doElement);
+		  controls = new THREE.OrbitControls(camera, renderer.domElement);
 		  scene = new THREE.Scene();
 		  
 		  watch = buildClock();
