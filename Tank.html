@@ -23,7 +23,8 @@ body {
   <button id='clear'>claer</button>
 </div>
 <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/109/three.min.js"></script>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/109/three.min.js"></script> -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://threejs.org/examples/js/controls/OrbitControls.js"></script>
 
 <script src="https://jyunming-chen.github.io/tutsplus/js/KeyboardState.js"></script>
@@ -85,7 +86,7 @@ function buildHead() {
 function buildTank() {
 	var tankMesh = new THREE.Object3D();
   var material = new THREE.MeshLambertMaterial({color:0x3e9ed6})
-	var base = new THREE.Mesh(new THREE.CubeGeometry(20, 10, 40),material);
+	var base = new THREE.Mesh(new THREE.BoxGeometry(20, 10, 40),material);
   base.position.set( 0, 5, 10);
   tankMesh.add(base);
   tankMesh.add(buildHead());
@@ -151,7 +152,7 @@ function init() {
   floorMap.wrapT = THREE.RepeatWrapping;
   floorMap.repeat.set(8, 8);
 	var material = new THREE.MeshLambertMaterial( { map: floorMap});
-  var floor = new THREE.Mesh(new THREE.CubeGeometry(400, 2,400), material);
+  var floor = new THREE.Mesh(new THREE.BoxGeometry(400, 2,400), material);
   scene.add(floor);
   floor.position.set(0,-0.5,0);
   controls = new THREE.OrbitControls(camera, renderer.domElement);
