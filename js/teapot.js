@@ -54,16 +54,11 @@ class Teapot {
 		});
 		teapotMaterial.transparent = true;
 		this.mtl = teapotMaterial;
-		let legacyjsonLoader = new THREE.LegacyJSONLoader();
-
-		let url = 'https://raw.githubusercontent.com/jyunming-chen/tutsplus/master/models/teapot.json';
-		legacyjsonLoader.load(url, function(geometry, materials) {
-			let legacyjsonModel = new THREE.Mesh(geometry, teapotMaterial);
-
-			let theTeapot = unitize (legacyjsonModel, 50);
-			theTeapot.name = name;
-			teapot.add(theTeapot);
-		});
+		
+		let jsonModel_center = new THREE.Mesh(new THREE.TeapotBufferGeometry(10), teapotMaterial);
+		let theTeapot = unitize (jsonModel_center, 50);
+		theTeapot.name = name;
+		teapot.add(theTeapot);
 		return teapot;
 	}
 }
