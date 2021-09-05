@@ -1,23 +1,23 @@
 # 以下為Computer Graphics Homework 的解說
    ##### 可以點選 [這裡](https://yuyeh.github.io/cghw/index.html) 跳轉到Homework首頁。
    ###### 如有任何問題，請發送信件到此信箱: a080044976@gmail.com
-   
+
    各項狀態:&nbsp;&nbsp;✅:已完成&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 🔄:待補中
-   
+
  * ✅ [Time-based animation, button](https://yuyeh.github.io/cghw/Clock.html)
- 
+
  * ✅ [Hierarchical model, Cannonball](https://yuyeh.github.io/cghw/Tank.html)
- 
+
  * ✅ [OBJ model, Kinematic Drive, Rectangle-Circle Intersection, Dual Viewports](https://yuyeh.github.io/cghw/Car.html)
  * ✅ [Class, Raycaster, Shadow Map](https://yuyeh.github.io/cghw/Shadowmap.html)
 
-* ✅ [Basic GLSL example: coordinate vs shading (with select/option)](https://yuyeh.github.io/cghw/BasicGLSLExample.html)
+ * ✅ [Basic GLSL example: coordinate vs shading (with select/option)](https://yuyeh.github.io/cghw/BasicGLSLExample.html)
 
-* ✅ [Class, Raycaster, Shadow Map](https://yuyeh.github.io/cghw/GLSLInTeapotClass.html)
+ * ✅ [Class, Raycaster, Shadow Map](https://yuyeh.github.io/cghw/GLSLInTeapotClass.html)
 
 #### Time-based animation, button
 
-Time-based animation 主要是模擬一般鐘錶、石英錶以及扇形時鐘的運作，在進入到 Clock animation畫面時，上方兩顆按鈕分別為時鐘的啟動與暫停，以及時鐘種類切換。此外，可藉由按住不放移動視角，或者轉動滑鼠滾輪切換遠近的方式去觀察時鐘的運行，至於時鐘以及背景顏色的搭配，則是參考 [這裡](https://www.beforafter.org/blog/2016/50-color-combinations) 進行配色。
+Time-based animation 主要是模擬一般鐘錶、石英錶以及扇形時鐘的運作，在進入到 Clock animation畫面時，上方兩顆按鈕分別為時鐘的啟動與暫停，以及時鐘種類切換。此外，可藉由按住不放移動視角，或者轉動滑鼠滾輪切換遠近的方式去觀察時鐘的運行，至於時鐘以及背景顏色的搭配，則是參考 [這裡](https://www.shutterstock.com/zh-Hant/blog/101-free-color-combinations-design-inspiration) 進行配色。
 
 
 #### Hierarchical model, Cannonball
@@ -42,8 +42,8 @@ Hierarchical model 簡單來說就是模擬一台戰車的一些基本動作，[
 最後Shading方面，Gooch shading 是藉由 以下公式 :
     <br>Kcdiff = Kcool + αKdiffuse
     <br>Kwdiff = Kwarm + βKdiffuse
-    <br>Kfinal = [ ( 1 + N．L ) / 2 ] * Kcdiff + [1 - ( 1 + N．L ) / 2 ] * Kwdiff    
-在 javascript 中 type="x-shader/x-fragment" 進行顏色的運算，其詳細的原理可以點選 [這裡](https://lva.cg.tuwien.ac.at/ecg/wiki/doku.php?id=students:gooch) 了解。
+    <br>Kfinal =  [ ( 1 + N．L ) / 2 ] * Kcdiff + [1 - ( 1 + N．L ) / 2 ] * Kwdiff
+在 javascript 中 type="x-shader/x-fragment" 進行顏色的運算，其詳細的原理可以點選 [這裡](http://artis.imag.fr/~Cyril.Soler/DEA/NonPhotoRealisticRendering/Papers/p447-gooch.pdf) 了解。
 
 #### Class, Raycaster, Shadow Map
 
