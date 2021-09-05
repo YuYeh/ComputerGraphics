@@ -43,6 +43,7 @@ Hierarchical model 簡單來說就是模擬一台戰車的一些基本動作，[
     <br>Kcdiff = Kcool + αKdiffuse
     <br>Kwdiff = Kwarm + βKdiffuse
     <br>Kfinal =  [ ( 1 + N．L ) / 2 ] * Kcdiff + [1 - ( 1 + N．L ) / 2 ] * Kwdiff
+	
 在 javascript 中 type="x-shader/x-fragment" 進行顏色的運算，其詳細的原理可以點選 [這裡](http://artis.imag.fr/~Cyril.Soler/DEA/NonPhotoRealisticRendering/Papers/p447-gooch.pdf) 了解。
 
 #### Class, Raycaster, Shadow Map
