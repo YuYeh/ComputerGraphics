@@ -1,19 +1,19 @@
-# 以下為Computer Graphics Homework 的解說
-   ##### 可以點選 [這裡](https://yuyeh.github.io/cghw/index.html) 跳轉到Homework預覽頁面。
+# 以下為Computer Graphics的解說
+   ##### 可以點選 [這裡](https://yuyeh.github.io/ComputerGraphics/index.html) 跳轉到預覽頁面。
    ###### 如有任何問題，請發送信件到此信箱: a080044976@gmail.com
    
    各項狀態:&nbsp;&nbsp;✅:已完成&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 🔄:待補中
    
- * ✅ [Time-based animation, button](https://yuyeh.github.io/cghw/Clock.html)
+ * ✅ [Time-based animation, button](https://yuyeh.github.io/ComputerGraphicsw/Clock.html)
  
- * ✅ [Hierarchical model, Cannonball](https://yuyeh.github.io/cghw/Tank.html)
+ * ✅ [Hierarchical model, Cannonball](https://yuyeh.github.io/ComputerGraphics/Tank.html)
  
- * ✅ [OBJ model, Kinematic Drive, Rectangle-Circle Intersection, Dual Viewports](https://yuyeh.github.io/cghw/Car.html)
- * ✅ [Class, Raycaster, Shadow Map](https://yuyeh.github.io/cghw/Shadowmap.html)
+ * ✅ [OBJ model, Kinematic Drive, Rectangle-Circle Intersection, Dual Viewports](https://yuyeh.github.io/ComputerGraphics/Car.html)
+ * ✅ [Class, Raycaster, Shadow Map](https://yuyeh.github.io/ComputerGraphics/Shadowmap.html)
 
-* ✅ [Basic GLSL example: coordinate vs shading (with select/option)](https://yuyeh.github.io/cghw/BasicGLSLExample.html)
+* ✅ [Basic GLSL example: coordinate vs shading (with select/option)](https://yuyeh.github.io/ComputerGraphics/BasicGLSLExample.html)
 
-* ✅ [Class, Raycaster, Shadow Map](https://yuyeh.github.io/cghw/GLSLInTeapotClass.html)
+* ✅ [Class, Raycaster, Shadow Map](https://yuyeh.github.io/ComputerGraphics/GLSLInTeapotClass.html)
 
 #### Time-based animation, button
 
