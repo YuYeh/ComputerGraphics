@@ -1,6 +1,6 @@
 # 以下為Computer Graphics的解說
    ##### 可以點選 [這裡](https://yuyeh.github.io/ComputerGraphics/index.html) 跳轉到預覽頁面。
-   ###### 如有任何問題，請發送信件到此信箱: a080044976@gmail.com
+   ###### 如有任何問題，請發送信件到此信箱: kevinyytsai12@gmail.com
    
    各項狀態:&nbsp;&nbsp;✅:已完成&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 🔄:待補中
    
